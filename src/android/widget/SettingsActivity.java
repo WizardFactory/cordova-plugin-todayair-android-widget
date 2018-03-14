@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.R;
 import net.wizardfactory.todayweather.widget.Data.Units;
 
 import org.json.JSONArray;

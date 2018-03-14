@@ -7,7 +7,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.R;
 import net.wizardfactory.todayweather.widget.Data.WeatherData;
 import net.wizardfactory.todayweather.widget.Data.WidgetData;
 import net.wizardfactory.todayweather.widget.JsonElement.WeatherElement;

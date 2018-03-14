@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import net.wizardfactory.todayweather.MainActivity;
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.MainActivity;
+import net.wizardfactory.todayair.R;
 
 import org.apache.cordova.CordovaActivity;
 

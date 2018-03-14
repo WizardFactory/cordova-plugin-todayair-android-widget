@@ -1,6 +1,6 @@
 package net.wizardfactory.todayweather.widget.Data;
 
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.R;
 import net.wizardfactory.todayweather.widget.JsonElement.WeatherElement;
 
 import java.util.Calendar;

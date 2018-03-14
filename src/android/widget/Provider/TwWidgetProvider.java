@@ -14,8 +14,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
-import net.wizardfactory.todayweather.MainActivity;
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.MainActivity;
+import net.wizardfactory.todayair.R;
 import net.wizardfactory.todayweather.widget.Data.WidgetData;
 import net.wizardfactory.todayweather.widget.SettingsActivity;
 import net.wizardfactory.todayweather.widget.WidgetMenuActivity;

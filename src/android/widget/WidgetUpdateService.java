@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.R;
 import net.wizardfactory.todayweather.widget.Data.Units;
 import net.wizardfactory.todayweather.widget.Data.WeatherData;
 import net.wizardfactory.todayweather.widget.Data.WidgetData;

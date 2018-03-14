@@ -12,7 +12,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -3,7 +3,7 @@ package net.wizardfactory.todayweather.widget.Provider;
 import android.content.Context;
 import android.widget.RemoteViews;
 
-import net.wizardfactory.todayweather.R;
+import net.wizardfactory.todayair.R;
 import net.wizardfactory.todayweather.widget.Data.Units;
 import net.wizardfactory.todayweather.widget.Data.WidgetData;
 
