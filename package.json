@@ -1,0 +1,17 @@
+{
+  "name": "cordova-plugin-todayweather-android-widget",
+  "version": "0.2.4",
+  "description": "todayweather android widget",
+  "cordova": {
+    "id": "cordova-plugin-todayweather-android-widget",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "alec kim",
+  "license": "MIT"
+}
