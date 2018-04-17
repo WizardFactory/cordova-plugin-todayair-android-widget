@@ -16,6 +16,7 @@
     <string name="aqi">大気質</string>
     <string name="pm10">PM10</string>
     <string name="pm25">PM2.5</string>
+    <string name="o3">O3</string>
     <string name="good">よい</string>
     <string name="moderate">普通</string>
     <string name="unhealthy_for_sensitive_groups">乳幼児、お年寄りは注意</string>

@@ -17,16 +17,20 @@ public class WeatherData {
     private double maxTemperature = WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL;
     private double minTemperature = WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL;
     private String summary = null;
+    private String summaryAir = null;
     private Date pubDate = null;
     private int aqiGrade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm10Grade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm25Grade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
+    private int o3Grade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int aqiValue = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm10Value = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm25Value = WeatherElement.DEFAULT_WEATHER_INT_VAL;
+    private double o3Value = WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL;
     private String aqiStr = null;
     private String pm10Str = null;
     private String pm25Str = null;
+    private String o3Str = null;
     private Date aqiPubDate = null;
     private Date date = null; //날씨정보 날짜
     private String rn1Str = null;
@@ -97,6 +101,14 @@ public class WeatherData {
         this.aqiStr = aqiStr;
     }
 
+    public String getO3Str() {
+        return o3Str;
+    }
+
+    public void setO3Str(String o3Str) {
+        this.o3Str = o3Str;
+    }
+
     public int getPm25Value() {
         return pm25Value;
     }
@@ -121,6 +133,14 @@ public class WeatherData {
         this.aqiValue = aqiValue;
     }
 
+    public void setO3Value(double o3Value) {
+        this.o3Value = o3Value;
+    }
+
+    public double getO3Value() {
+        return o3Value;
+    }
+
     public Date getPubDate() {
         return pubDate;
     }
@@ -135,6 +155,14 @@ public class WeatherData {
 
     public int getPm25Grade() {
         return pm25Grade;
+    }
+
+    public int getO3Grade() {
+        return o3Grade;
+    }
+
+    public void setO3Grade(int o3Grade) {
+        this.o3Grade = o3Grade;
     }
 
     public int getSky() {
@@ -165,6 +193,10 @@ public class WeatherData {
         return summary;
     }
 
+    public String getSummaryAir() {
+        return summaryAir;
+    }
+
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
     }
@@ -183,6 +215,10 @@ public class WeatherData {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public void setSummaryAir(String summaryAir) {
+        this.summaryAir = summaryAir;
     }
 
     public void setSky(double sky) {

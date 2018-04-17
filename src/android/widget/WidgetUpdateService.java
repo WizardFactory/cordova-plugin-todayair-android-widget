@@ -39,6 +39,7 @@ import net.wizardfactory.todayweather.widget.Provider.DailyWeather;
 import net.wizardfactory.todayweather.widget.Provider.W1x1CurrentWeather;
 import net.wizardfactory.todayweather.widget.Provider.W2x1CurrentWeather;
 import net.wizardfactory.todayweather.widget.Provider.W2x1WidgetProvider;
+import net.wizardfactory.todayweather.widget.Provider.W4x1AirStatus;
 import net.wizardfactory.todayweather.widget.Provider.W4x1Current3Hourly;
 import net.wizardfactory.todayweather.widget.Provider.W4x1Hourly;
 import net.wizardfactory.todayweather.widget.Provider.W4x2ClockCurrentDaily;
@@ -814,6 +815,12 @@ public class WidgetUpdateService extends Service {
             W4x3ClockCurrentHourlyDaily.setWidgetData(context, views, wData, mLocalUnits);
             Log.i("UpdateWidgetService", "set 4x3 clock current hourly daily id=" + widgetId);
         }
+        else if (mLayoutId == R.layout.w4x1_air_status) {
+            wData.setCurrentWeather(WorldWeatherElement.getCurrentWeather(jsonStr));
+            W4x1AirStatus.setWidgetStyle(context, widgetId, views);
+            W4x1AirStatus.setWidgetData(context, views, wData, mLocalUnits);
+            Log.i("UpdateWorldWeather", "set 4x1 air status id=" + widgetId);
+        }
         return views;
     }
 
@@ -937,6 +944,11 @@ public class WidgetUpdateService extends Service {
             W4x3ClockCurrentHourlyDaily.setWidgetData(context, views, wData, mLocalUnits);
             Log.i("UpdateWidgetService", "set 4x3 clock current hourly daily id=" + widgetId);
         }
+        else if (mLayoutId == R.layout.w4x1_air_status) {
+            W4x1AirStatus.setWidgetStyle(context, widgetId, views);
+            W4x1AirStatus.setWidgetData(context, views, wData, mLocalUnits);
+            Log.i("UpdateWidgetService", "set 4x1 air status id=" + widgetId);
+        }
 
         return views;
     }
@@ -968,6 +980,8 @@ public class WidgetUpdateService extends Service {
             return W4x2ClockCurrentHourly.class;
         } else if (layoutId == R.layout.w4x3_clock_current_hourly_daily) {
             return W4x3ClockCurrentHourlyDaily.class;
+        } else if (layoutId == R.layout.w4x1_air_status) {
+            return W4x1AirStatus.class;
         }
 
         return null;

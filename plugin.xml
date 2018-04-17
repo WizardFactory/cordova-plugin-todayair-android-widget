@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-todayweather-android-widget" version="0.2.4" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>todayweatherAndroidWidget</name>
+<plugin id="cordova-plugin-todayair-android-widget" version="0.2.4" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>todayairAndroidWidget</name>
     <js-module name="todayweatherAndroidWidget" src="www/todayweatherAndroidWidget.js">
         <clobbers target="cordova.plugins.todayweatherAndroidWidget" />
     </js-module>
@@ -25,22 +25,23 @@
       <string name="cmp_yesterday">%1$s˚ from yesterday</string>
       <string name="update">Update</string>
       <string name="move_main">Go to App</string>
-      <string name="msg_do_not_widget_data_plz_update">Unable to retrieve weather information.\nClick here to refresh.</string>
-      <string name="fail_to_get_location">TodayWeather : Unable to detect your location.</string>
+      <string name="msg_do_not_widget_data_plz_update">Unable to retrieve air information.\nClick here to refresh.</string>
+      <string name="fail_to_get_location">TodayAir : Unable to detect your location.</string>
       <string name="current_position">Current Location</string>
       <string name="ok">OK</string>
       <string name="cancel">Cancel</string>
       <string name="aqi">AQI</string>
       <string name="pm10">PM10</string>
       <string name="pm25">PM2.5</string>
+      <string name="o3">O3</string>
       <string name="good">Good</string>
       <string name="moderate">Moderate</string>
       <string name="unhealthy_for_sensitive_groups">Unhealthy for sensitive groups</string>
       <string name="unhealthy">Unhealthy</string>
       <string name="very_unhealthy">Very unhealthy</string>
       <string name="hazardous">Hazardous</string>
-      <string name="this_location_is_not_supported">No weather data available</string>
-      <string name="fail_to_get_geoinfo">TodayWeather : Unable to retrieve local data</string>
+      <string name="this_location_is_not_supported">No air data available</string>
+      <string name="fail_to_get_geoinfo">TodayAir : Unable to retrieve local data</string>
       <string name="loading">Loading</string>
       <string name="general">General</string>
       <string name="style">Style</string>
@@ -55,105 +56,27 @@
       <string name="now">now</string>
         </config-file>
     	<config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:launchMode="singleInstance" android:name=".widget.WidgetMenuActivity" android:theme="@android:style/Theme.Translucent" />
-            <service android:name=".widget.WidgetUpdateService" />
-            <activity android:name=".widget.SettingsActivity" android:theme="@android:style/Theme.DeviceDefault.Light">
+            <activity android:launchMode="singleInstance" android:name="net.wizardfactory.todayweather.widget.WidgetMenuActivity" android:theme="@android:style/Theme.Translucent" />
+            <service android:name="net.wizardfactory.todayweather.widget.WidgetUpdateService" />
+            <activity android:name="net.wizardfactory.todayweather.widget.SettingsActivity" android:theme="@android:style/Theme.DeviceDefault.Light">
                 <intent-filter>
                     <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
                 </intent-filter>
             </activity>
-            <receiver android:label="@string/widget_name" android:name=".widget.Provider.W1x1CurrentWeather">
+            <receiver android:name="net.wizardfactory.todayweather.widget.Provider.W4x1AirStatus">
                 <intent-filter>
                     <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/w1x1_current_weather_info" />
+
+                <meta-data
+                        android:name="android.appwidget.provider"
+                        android:resource="@xml/w4x1_air_status_info" />
             </receiver>
-            <receiver android:name=".widget.Provider.W2x1CurrentWeather">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/w2x1_current_weather_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.ClockAndCurrentWeather">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/clock_and_current_weather_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.CurrentWeatherAndThreeDays">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/current_weather_and_three_days_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.ClockAndThreeDays">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/clock_and_three_days_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.DailyWeather">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/daily_weather_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.AirQualityIndex">
+            <receiver android:name="net.wizardfactory.todayweather.widget.Provider.AirQualityIndex">
                 <intent-filter>
                     <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 </intent-filter>
                 <meta-data android:name="android.appwidget.provider" android:resource="@xml/air_quality_index_info" />
-            </receiver>
-            <receiver android:label="@string/widget_name" android:name=".widget.Provider.W2x1WidgetProvider">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-                <meta-data android:name="android.appwidget.provider" android:resource="@xml/w2x1_widget_provider" />
-            </receiver>
-            <receiver android:name=".widget.Provider.W4x2ClockCurrentDaily">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-
-                <meta-data
-                        android:name="android.appwidget.provider"
-                        android:resource="@xml/w4x2_clock_current_daily_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.W4x1Current3Hourly">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-
-                <meta-data
-                        android:name="android.appwidget.provider"
-                        android:resource="@xml/w4x1_current_hourly_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.W4x1Hourly">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-
-                <meta-data
-                        android:name="android.appwidget.provider"
-                        android:resource="@xml/w4x1_hourly_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.W4x2ClockCurrentHourly">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-
-                <meta-data
-                        android:name="android.appwidget.provider"
-                        android:resource="@xml/w4x2_clock_current_hourly_info" />
-            </receiver>
-            <receiver android:name=".widget.Provider.W4x3ClockCurrentHourlyDaily">
-                <intent-filter>
-                    <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                </intent-filter>
-
-                <meta-data
-                        android:name="android.appwidget.provider"
-                        android:resource="@xml/w4x3_clock_current_hourly_daily_info" />
             </receiver>
         </config-file>
         <!--<source-file src="src/android/todayweatherAndroidWidget.java" target-dir="src/cordova-plugin-todayweather-android-widget/todayweatherAndroidWidget" />-->
@@ -246,9 +169,11 @@
 <resource-file src="src/android/res/drawable-xhdpi/w4x2_clock_current_daily.png" target="res/drawable-xhdpi/w4x2_clock_current_daily.png" />
 <resource-file src="src/android/res/drawable-xhdpi/w4x2_clock_current_hourly.png" target="res/drawable-xhdpi/w4x2_clock_current_hourly.png" />
 <resource-file src="src/android/res/drawable-xhdpi/w4x3_clock_current_hourly_daily.png" target="res/drawable-xhdpi/w4x3_clock_current_hourly_daily.png" />
+<resource-file src="src/android/res/drawable-xhdpi/w4x1_air_status.png" target="res/drawable-xhdpi/w4x1_air_status.png" />
 <resource-file src="src/android/res/drawable-xhdpi/wind_cloud.png" target="res/drawable-xhdpi/wind_cloud.png" />
 <resource-file src="src/android/res/drawable-xhdpi/ic_refresh_black_24dp.xml" target="res/drawable-xhdpi/ic_refresh_black_24dp.xml" />
 <resource-file src="src/android/res/drawable-xhdpi/ic_settings_black_24dp.xml" target="res/drawable-xhdpi/ic_settings_black_24dp.xml" />
+<resource-file src="src/android/res/layout/w4x1_air_status.xml" target="res/layout/w4x1_air_status.xml" />
 <resource-file src="src/android/res/layout/air_quality_index.xml" target="res/layout/air_quality_index.xml" />
 <resource-file src="src/android/res/layout/clock_and_current_weather.xml" target="res/layout/clock_and_current_weather.xml" />
 <resource-file src="src/android/res/layout/clock_and_three_days.xml" target="res/layout/clock_and_three_days.xml" />
@@ -284,6 +209,7 @@
 <resource-file src="src/android/res/values-zh-rCN/strings.xml" target="res/values-zh-rCN/strings.xml" />
 <resource-file src="src/android/res/values-zh-rTW/widget_preferences.xml" target="res/values-zh-rTW/widget_preferences.xml" />
 <resource-file src="src/android/res/values-zh-rTW/strings.xml" target="res/values-zh-rTW/strings.xml" />
+<resource-file src="src/android/res/xml/w4x1_air_status_info.xml" target="res/xml/w4x1_air_status_info.xml" />
 <resource-file src="src/android/res/xml/air_quality_index_info.xml" target="res/xml/air_quality_index_info.xml" />
 <resource-file src="src/android/res/xml/widget_preferences.xml" target="res/xml/widget_preferences.xml" />
 <resource-file src="src/android/res/xml/clock_and_current_weather_info.xml" target="res/xml/clock_and_current_weather_info.xml" />

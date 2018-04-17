@@ -22,6 +22,7 @@
     <string name="aqi">AQI</string>
     <string name="pm10">PM10</string>
     <string name="pm25">PM2.5</string>
+    <string name="o3">O3</string>
     <string name="good">Good</string>
     <string name="moderate">Moderate</string>
     <string name="unhealthy_for_sensitive_groups">Unhealthy for sensitive groups</string>

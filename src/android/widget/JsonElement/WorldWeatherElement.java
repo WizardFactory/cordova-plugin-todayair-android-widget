@@ -144,6 +144,10 @@ public class WorldWeatherElement {
                     currentWeather.setAqiGrade(arpltn.optInt("khaiGrade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
                     currentWeather.setPm10Grade(arpltn.optInt("pm10Grade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
                     currentWeather.setPm25Grade(arpltn.optInt("pm25Grade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
+                    currentWeather.setO3Str(arpltn.optString("o3Str", null));
+                    currentWeather.setO3Value(arpltn.optInt("o3Value", WeatherElement.DEFAULT_WEATHER_INT_VAL));
+                    currentWeather.setO3Grade(arpltn.optInt("o3Grade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
+                    currentWeather.setSummaryAir(current.optString("summaryAir", null));
                     //currentWeather.setStrAqiPubDate(arpltn.optString("dataTime", null));
                     currentWeather.setAqiPubDate(_convertString2Date(current.getString("dateObj")));
                 }
