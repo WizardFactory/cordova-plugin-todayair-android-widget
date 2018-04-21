@@ -25,13 +25,13 @@ public class SettingsActivity extends PreferenceActivity {
 
     //It needs to sync with cordova-plugin-app-preferences plugin
     private static final String APP_PREFS_NAME = "net.wizardfactory.todayweather_preferences";
-    private static final String APP_PREFS_NAME2 = "group.net.wizardfactory.todayweather";
+    private static final String APP_PREFS_NAME2 = "group.net.wizardfactory.todayair";
     private static final String APP_CITY_LIST_KEY = "cityList";
     private static final String APP_UNITS_KEY = "units";
     private static final String APP_UPDATE_INTERVAL_KEY = "updateInterval";
     private static final String APP_OPACITY_KEY = "widgetOpacity";
 
-    private static final String WIDGET_PREFS_NAME = "net.wizardfactory.todayweather.widget.Provider.WidgetProvider";
+    private static final String WIDGET_PREFS_NAME = "net.wizardfactory.todayair.widget.Provider.WidgetProvider";
     private static final String WIDGET_PREFIX_KEY = "appwidget_";
     private static final String WIDGET_UPDATE_INTERVAL_PREFIX_KEY = "updateInterval_";
     private static final String WIDGET_TRANSPARENCY_PREFIX_KEY = "transparency_";

@@ -218,6 +218,11 @@ public class WeatherElement {
 //            current.setMaxTemperature(findMaxTemperature(true));
 //            current.setMinTemperature(findMinTemperature(true));
             current.setSummary(weatherCurrent.getStrSummary());
+            current.setSummaryAir(weatherCurrent.getStrSummaryAir());
+
+            current.setO3Grade(weatherCurrent.getO3Grade());;
+            current.setO3Str(weatherCurrent.getO3Str());
+            current.setO3Value(weatherCurrent.getO3Value());
             current.setAqiPubDate(weatherCurrent.getAqiPubDate());
             current.setAqiGrade(weatherCurrent.getAqiGrade());
             current.setPm10Grade(weatherCurrent.getPm10Grade());

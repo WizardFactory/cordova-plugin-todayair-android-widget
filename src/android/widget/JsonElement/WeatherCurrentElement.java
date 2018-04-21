@@ -30,16 +30,20 @@ public class WeatherCurrentElement {
     private String strPubDate = null;
     private String stnDateTime = null; //aws에서 가지고 오는 live time
     private String strSummary = null;
+    private String strSummaryAir = null;
     private String aqiStationName = null;
     private int aqiValue = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm10Value = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm25Value = WeatherElement.DEFAULT_WEATHER_INT_VAL;
+    private double o3Value = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int aqiGrade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm10Grade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private int pm25Grade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
+    private int o3Grade = WeatherElement.DEFAULT_WEATHER_INT_VAL;
     private String aqiStr = null;
     private String pm10Str = null;
     private String pm25Str = null;
+    private String o3Str = null;
     private String strAqiPubDate = null;
     private Date aqiPubDate = null;
     private double before24ht1h = WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL;
@@ -173,6 +177,30 @@ public class WeatherCurrentElement {
         return pm10Grade;
     }
 
+    public void setO3Value(double o3Value) {
+        this.o3Value = o3Value;
+    }
+
+    public double getO3Value() {
+        return o3Value;
+    }
+
+    public void setO3Str(String o3Str) {
+        this.o3Str = o3Str;
+    }
+
+    public String getO3Str() {
+        return o3Str;
+    }
+
+    public void setO3Grade(int o3Grade) {
+        this.o3Grade = o3Grade;
+    }
+
+    public int getO3Grade() {
+        return o3Grade;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -187,6 +215,10 @@ public class WeatherCurrentElement {
 
     public String getStrSummary() {
         return strSummary;
+    }
+
+    public String getStrSummaryAir() {
+        return strSummaryAir;
     }
 
     public double getT1h() {
@@ -245,6 +277,10 @@ public class WeatherCurrentElement {
         this.strSummary = strSummary;
     }
 
+    public void setStrSummaryAir(String strSummaryAir) {
+        this.strSummaryAir = strSummaryAir;
+    }
+
     public void setT1h(double t1h) {
         this.t1h = t1h;
     }
@@ -301,6 +337,7 @@ public class WeatherCurrentElement {
                 retCurrentElement.setStrDate(reader.optString("date", null));
                 retCurrentElement.setTime(reader.optInt("time", -1));
                 retCurrentElement.setStrSummary(reader.optString("summary", null));
+                retCurrentElement.setStrSummaryAir(reader.optString("summaryAir", null));
                 retCurrentElement.setT1h(reader.optDouble("t1h", WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL));
                 retCurrentElement.setRn1(reader.optDouble("rn1", WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL));
                 retCurrentElement.setSky(reader.optDouble("sky", WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL));
@@ -352,6 +389,11 @@ public class WeatherCurrentElement {
                     retCurrentElement.setAqiGrade(arpltn.optInt("khaiGrade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
                     retCurrentElement.setPm10Grade(arpltn.optInt("pm10Grade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
                     retCurrentElement.setPm25Grade(arpltn.optInt("pm25Grade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
+
+                    retCurrentElement.setO3Str(arpltn.optString("o3Str", null));
+                    retCurrentElement.setO3Grade(arpltn.optInt("o3Grade", WeatherElement.DEFAULT_WEATHER_INT_VAL));
+                    retCurrentElement.setO3Value(arpltn.optDouble("o3Value", WeatherElement.DEFAULT_WEATHER_DOUBLE_VAL));
+
                     retCurrentElement.setStrAqiPubDate(arpltn.optString("dataTime", null));
                     retCurrentElement.setAqiPubDate(WeatherElement.makeDateFromStrDashDate(retCurrentElement.getStrAqiPubDate()));
                 }

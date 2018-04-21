@@ -14,8 +14,9 @@
     <string name="ok">確認</string>
     <string name="cancel">取消</string>
     <string name="aqi">空氣質量</string>
-    <string name="pm10">細微</string>
-    <string name="pm25">超小細微</string>
+    <string name="pm10">PM10</string>
+    <string name="pm25">PM2.5</string>
+    <string name="o3">O3</string>
     <string name="good">優</string>
     <string name="moderate">普通</string>
     <string name="unhealthy_for_sensitive_groups">敏感者註意</string>
