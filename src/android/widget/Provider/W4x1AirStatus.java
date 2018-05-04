@@ -76,7 +76,7 @@ public class W4x1AirStatus extends TwWidgetProvider {
         int aqiGrade = currentData.getAqiGrade();
         int pm10Grade = currentData.getPm10Grade();
         int pm25Grade = currentData.getPm25Grade();
-	    int o3Grade = currentData.getO3Grade();
+        int o3Grade = currentData.getO3Grade();
         int color = -1;
 
         if (aqiGrade != WeatherElement.DEFAULT_WEATHER_INT_VAL && aqiGrade != 0) {
