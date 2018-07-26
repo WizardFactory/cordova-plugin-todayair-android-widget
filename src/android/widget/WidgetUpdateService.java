@@ -50,6 +50,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,6 +65,7 @@ public class WidgetUpdateService extends Service {
     //private final static String WORLD_WEATHER_API_URL = "/ww/010000/current/2?gcode=";
     private final static String GEOINFO_TO_WEATHER_API_URL = "/weather/coord";
     private final static String KMA_ADDR_API_URL = "/v000901/kma/addr";
+    private static final String WIDGET_PREFS_NAME = "net.wizardfactory.todayweather.widget.Provider.WidgetProvider";
 
     private LocationManager mLocationManager = null;
     private Context mContext;
@@ -76,8 +78,10 @@ public class WidgetUpdateService extends Service {
 //    static final int MSG_GET_KR_ADDRESS = 2;
     static final int MSG_GET_WEATHER_INFO = 3;
     static final int MSG_DRAW_WIDGET = 4;
+    static final int MSG_LOAD_WEATHER_INFO = 5;
 
     private Handler mHandler = null;
+    private boolean mManualUpdate = false;
 
     /**
      * msg.arg1 is widgetId, msg.arg2 is startId
@@ -99,6 +103,9 @@ public class WidgetUpdateService extends Service {
 //                case MSG_GET_KR_ADDRESS:
 //                    getKrAddressInfo(msg.arg1, msg.arg2);
 //                    break;
+                case MSG_LOAD_WEATHER_INFO:
+                    loadWeatherInfo(msg.arg1, msg.arg2);
+                    break;
                 case MSG_GET_WEATHER_INFO:
                     getWeatherInfo(msg.arg1, msg.arg2);
                     break;
@@ -118,6 +125,7 @@ public class WidgetUpdateService extends Service {
         public boolean currentPosition = false;
         public int startId;
         public int msgWhat;
+        public long dataTime;
     }
 
     private List<TransWeather> mTransWeatherInfoList = new ArrayList<TransWeather>();
@@ -198,6 +206,7 @@ public class WidgetUpdateService extends Service {
         if (extras != null) {
             widgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mManualUpdate = extras.getBoolean("ManualUpdate", false);
         }
 
         // If this activity was started with an intent without an app widget ID, finish with an error.
@@ -243,6 +252,7 @@ public class WidgetUpdateService extends Service {
         }
 
         Units units = SettingsActivity.loadUnitsPref(context);
+        TransWeather transWeather;
 
         try {
             JSONObject jsonCityInfo = new JSONObject(jsonCityInfoStr);
@@ -263,6 +273,10 @@ public class WidgetUpdateService extends Service {
                 geoInfo.setName(jsonCityInfo.getString("name"));
             }
 
+            transWeather = getTransWeatherInfo(widgetId);
+            transWeather.geoInfo = geoInfo;
+            transWeather.currentPosition = currentPosition;
+
             mLocalUnits = units;
         } catch (JSONException e) {
             Log.e("Service", "JSONException: " + e.getMessage());
@@ -270,7 +284,26 @@ public class WidgetUpdateService extends Service {
             return;
         }
 
+        //check next update time
+        if (mManualUpdate == true) {
+            Log.i("Service", "Update widget manually");
+        }
+        else {
+            long nextUpdateTime = SettingsActivity.loadNextUpdateTimeIndexPref(context, widgetId);
+            long currentTime = System.currentTimeMillis();
+            if (nextUpdateTime != 0 && currentTime < nextUpdateTime) {
+                Log.i("Service", "Update Time is not yet!!");
+                mHandler.sendMessage(Message.obtain(null, MSG_LOAD_WEATHER_INFO, widgetId, startId));
+                return;
+            }
+            else {
+                Log.i("Service", "Update widget by time!");
+            }
+        }
+
         Log.i("Service", "start update startId="+startId);
+        SettingsActivity.cancelAlarmManager(context, widgetId);
+        SettingsActivity.setAlarmManager(context, widgetId);
 
         //notice start updating
         try {
@@ -284,11 +317,6 @@ public class WidgetUpdateService extends Service {
             Log.e("Service", e.toString());
             e.printStackTrace();
         }
-
-        TransWeather transWeather = getTransWeatherInfo(widgetId);
-        transWeather.geoInfo = geoInfo;
-        transWeather.currentPosition = currentPosition;
-
 
         if (currentPosition) {
             Log.i("Service", "Update current position app widget id=" + widgetId);
@@ -392,7 +420,6 @@ public class WidgetUpdateService extends Service {
         return;
     }
 
-    private static final String WIDGET_PREFS_NAME = "net.wizardfactory.todayweather.widget.Provider.WidgetProvider";
     private GeoInfo loadCurrentGeoInfo(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(WIDGET_PREFS_NAME, 0);
         Gson gson = new Gson();
@@ -535,6 +562,40 @@ public class WidgetUpdateService extends Service {
         }).execute();
     }
 
+    private static final String WIDGET_WEATHER_DATA_PREFIX_KEY = "weatherData_";
+    private static final String WIDGET_WEATHER_DATA_TIME_PREFIX_KEY = "weatherDataTime_";
+    private void loadWeatherInfo(final int widgetId, final int startId) {
+        Log.i("Service", "load weather data widgetId_" + widgetId);
+
+        Context context = getApplicationContext();
+        SharedPreferences widgetPrefs = context.getSharedPreferences(WIDGET_PREFS_NAME, 0);
+        String jsonStr = widgetPrefs.getString(WIDGET_WEATHER_DATA_PREFIX_KEY + widgetId, null);
+        long dataTime = widgetPrefs.getLong(WIDGET_WEATHER_DATA_TIME_PREFIX_KEY + widgetId, 0);
+
+        if (jsonStr == null) {
+            Log.e("Service", "Fail to load weather data widgetId_" + widgetId);
+            mHandler.sendMessage(Message.obtain(null, MSG_GET_WEATHER_INFO, widgetId, startId));
+            return;
+        }
+
+        getTransWeatherInfo(widgetId).strJsonWeatherInfo = jsonStr;
+        getTransWeatherInfo(widgetId).dataTime = dataTime;
+        mHandler.sendMessage(Message.obtain(null, MSG_DRAW_WIDGET, widgetId, startId));
+    }
+
+    private void saveWeatherInfo(final int widgetId, final String jsonStr, long dataTime) {
+        Context context = getApplicationContext();
+        SharedPreferences.Editor prefs = context.getSharedPreferences(WIDGET_PREFS_NAME, 0).edit();
+        prefs.putString(WIDGET_WEATHER_DATA_PREFIX_KEY + widgetId, jsonStr);
+        prefs.putLong(WIDGET_WEATHER_DATA_TIME_PREFIX_KEY + widgetId, dataTime);
+        prefs.apply();
+    }
+
+    /**
+     * get weather data from api
+     * @param widgetId
+     * @param startId
+     */
     private void getWeatherInfo(final int widgetId, final int startId) {
         Log.i("WidgetUpdateService", "get weather info widget="+widgetId);
 
@@ -572,6 +633,9 @@ public class WidgetUpdateService extends Service {
             @Override
             public void onPostExecute(String jsonStr) {
                 if (jsonStr != null && jsonStr.length() > 0) {
+                    long dataTime = Calendar.getInstance().getTimeInMillis();
+                    getTransWeatherInfo(widgetId).dataTime = dataTime;
+                    saveWeatherInfo(widgetId, jsonStr, dataTime);
                     getTransWeatherInfo(widgetId).strJsonWeatherInfo = jsonStr;
                     mHandler.sendMessage(Message.obtain(null, MSG_DRAW_WIDGET, widgetId, startId));
                 }
@@ -650,10 +714,12 @@ public class WidgetUpdateService extends Service {
         }
 
         if (src.equals("KMA")) {
-            views = updateKrWeatherWidget(widgetId, transWeather.strJsonWeatherInfo, transWeather.geoInfo.getName());
+            views = updateKrWeatherWidget(widgetId, transWeather.strJsonWeatherInfo,
+                    transWeather.geoInfo.getName(), transWeather.dataTime);
         }
         else if (src.equals("DSF")) {
-            views = updateWorldWeatherWidget(widgetId, transWeather.strJsonWeatherInfo, transWeather.geoInfo.getName());
+            views = updateWorldWeatherWidget(widgetId, transWeather.strJsonWeatherInfo,
+                    transWeather.geoInfo.getName(), transWeather.dataTime);
         }
         else {
             Log.e("WidgetUpdateService", "unknown source="+src);
@@ -669,7 +735,9 @@ public class WidgetUpdateService extends Service {
         }
     }
 
-    private RemoteViews updateWorldWeatherWidget(int widgetId, String jsonStr, String locationName) {
+    private RemoteViews updateWorldWeatherWidget(int widgetId, String jsonStr, String locationName,
+                                                 long dataTime)
+    {
         if (jsonStr == null) {
             Log.e("WidgetUpdateService", "jsonData is NULL");
             Toast.makeText(getApplicationContext(), "Fail to get world weather data", Toast.LENGTH_LONG).show();
@@ -698,6 +766,7 @@ public class WidgetUpdateService extends Service {
             wData.setLoc(locationName);
         }
         wData.setUnits(WorldWeatherElement.getUnits(jsonStr));
+        wData.dataTime = dataTime;
 
         if (mLayoutId == R.layout.w2x1_widget_layout) {
             wData.setCurrentWeather(WorldWeatherElement.getCurrentWeather(jsonStr));
@@ -834,7 +903,9 @@ public class WidgetUpdateService extends Service {
      * @param widgetId
      * @param jsonStr
      */
-    private RemoteViews updateKrWeatherWidget(int widgetId, String jsonStr, String locationName) {
+    private RemoteViews updateKrWeatherWidget(int widgetId, String jsonStr, String locationName,
+                                              long dataTime)
+    {
         if (jsonStr == null) {
             Log.e("WidgetUpdateService", "jsonData is NULL");
             return null;
@@ -868,6 +939,7 @@ public class WidgetUpdateService extends Service {
             if (locationName != null) {
                 wData.setLoc(locationName);
             }
+            wData.dataTime = dataTime;
         }
         catch (Exception e) {
             Log.e("Service", "Exception: " + e.getMessage());
